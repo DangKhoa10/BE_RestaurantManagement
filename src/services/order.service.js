@@ -1,4 +1,4 @@
-const orderModel = require("../models/order.model");
+const orderModel = require("../models/Order.model");
 const orderDetailModel = require("../models/orderDetail.model");
 const {sendMail, templateMailSendOrder , templateMailChangeStatus} = require("../utils");
 
@@ -9,9 +9,9 @@ class OrderService {
   static addOrder = async ({
     LoaiPhieuDat,
     TrangThai,
-    SoLuongNguoi,
+    SoLuongNguoiTrenBanOrPhong,
+    SoLuongBanOrPhong,
     ThoiGianBatDau,
-    ThoiGianKetThuc,
     MaKhachHang,
     ListThucDon,
     ListPhong,
@@ -25,9 +25,9 @@ class OrderService {
       const newOrder = await orderModel.create({
         LoaiPhieuDat,
         TrangThai,
-        SoLuongNguoi,
+        SoLuongNguoiTrenBanOrPhong,
+        SoLuongBanOrPhong,
         ThoiGianBatDau,
-        ThoiGianKetThuc,
         MaKhachHang,
         HoTen ,
         Email ,
@@ -201,9 +201,9 @@ class OrderService {
     id,
     LoaiPhieuDat,
     TrangThai,
-    SoLuongNguoi,
+    SoLuongNguoiTrenBanOrPhong,
+    SoLuongBanOrPhong,
     ThoiGianBatDau,
-    ThoiGianKetThuc,
     MaKhachHang,
     ListThucDon,
     ListPhong,
@@ -219,9 +219,9 @@ class OrderService {
     },{
       LoaiPhieuDat,
       TrangThai,
-      SoLuongNguoi,
+      SoLuongNguoiTrenBanOrPhong,
+      SoLuongBanOrPhong,
       ThoiGianBatDau,
-      ThoiGianKetThuc,
       MaKhachHang,
       HoTen ,
       Email ,

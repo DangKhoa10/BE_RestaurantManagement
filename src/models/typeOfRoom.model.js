@@ -15,6 +15,9 @@ const typeOfRoomSchema = new Schema({
     },
     DonViTinh:{
         type: String,
+    },
+    MoTa:{
+        type: String,
     }
 },{
     timestamps: true,

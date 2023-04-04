@@ -26,14 +26,15 @@ const orderSchema = new Schema({
         type: Number,
         required: true,
     },
-    SoLuongNguoi:{
+    SoLuongNguoiTrenBanOrPhong:{
+        type: Number,
+        required: true,
+    },
+    SoLuongBanOrPhong:{
         type: Number,
         required: true,
     },
     ThoiGianBatDau: {
-        type: Date,
-    },
-    ThoiGianKetThuc: {
         type: Date,
     },
     GhiChu: {

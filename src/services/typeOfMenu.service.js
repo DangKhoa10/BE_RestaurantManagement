@@ -1,4 +1,4 @@
-const model = require('../models/TypeOfMenu.model')
+const model = require('../models/typeOfMenu.model')
 
 class TypeOfMenuService{
 

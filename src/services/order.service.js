@@ -1,4 +1,4 @@
-const orderModel = require("../models/Order.model");
+const orderModel = require("../models/order.model");
 const orderDetailModel = require("../models/orderDetail.model");
 const {sendMail, templateMailSendOrder , templateMailChangeStatus} = require("../utils");
 
@@ -45,10 +45,8 @@ class OrderService {
         if (newOrderDetail) {
 
 
-          let subject = "Yêu cầu đặt phòng thành công";
-          if(LoaiPhieuDat == 0){
-            subject = "Yêu cầu đặt bàn thành công"
-          }
+          let subject = `Yêu cầu đặt ${LoaiPhieuDat == 0? "bàn" :"phòng"} thành công`;
+          
           let mail = Email
            
           let html = templateMailSendOrder(LoaiPhieuDat)
@@ -294,6 +292,29 @@ class OrderService {
       };
     }
   };
+
+  static getOrderByStatus = async ({ TrangThai }) => {
+    try {
+      const orders = await orderModel.find({ TrangThai })
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          data: orders,
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "get order by status error",
+        },
+      };
+    }
+  };
+
 
 }
 

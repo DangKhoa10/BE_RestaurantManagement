@@ -270,7 +270,7 @@ const templateMailSendOrder = (LoaiPhieuDat) =>{
                         <img src="https://res.cloudinary.com/dbar5movy/image/upload/v1680460830/RestaurantManagement/htsdibuokd0tjt5mz3zj.png"/>          
                     </div>
                     <div class="title">
-                        Yêu cầu đặt ${LoaiPhieuDat == 0 ? "bàn" : "phòng"} thành công
+                        Đơn đặt ${LoaiPhieuDat == 0 ? "bàn" : "phòng"} của bạn đã được gửi
                     </div>
                     <div class="mt-20">
                         <div>

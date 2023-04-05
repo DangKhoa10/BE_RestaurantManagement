@@ -1,5 +1,6 @@
 const orderModel = require("../models/order.model");
 const orderDetailModel = require("../models/orderDetail.model");
+const customerModel = require("../models/customer.model")
 const {sendMail, templateMailSendOrder , templateMailChangeStatus} = require("../utils");
 
 
@@ -22,13 +23,26 @@ class OrderService {
     GhiChu
   }) => {
     try {
+      
+      let MaKH
+      if(MaKhachHang){
+        MaKH = MaKhachHang
+      }
+      else{
+        const newCustomer = await customerModel.create({
+          Email , TenKhachHang : HoTen , SoDienThoai
+        })
+        MaKH = newCustomer._id
+      }
+      
+
       const newOrder = await orderModel.create({
         LoaiPhieuDat,
         TrangThai,
         SoLuongNguoiTrenBanOrPhong,
         SoLuongBanOrPhong,
         ThoiGianBatDau,
-        MaKhachHang,
+        MaKhachHang: MaKH,
         HoTen ,
         Email ,
         SoDienThoai,
@@ -43,6 +57,7 @@ class OrderService {
         });
 
         if (newOrderDetail) {
+
 
 
           let subject = `Yêu cầu đặt ${LoaiPhieuDat == 0? "bàn" :"phòng"} thành công`;
@@ -241,17 +256,7 @@ class OrderService {
 
         if (updateOrderDetail) {
           
-          if(TrangThai == 1){
-            let subject = "Đặt phòng thành công";
-            if(LoaiPhieuDat == 0){
-              subject = "Đặt bàn thành công"
-            }
-            let mail = Email
-            
-            let html = templateMailChangeStatus(LoaiPhieuDat)
-
-            let check = sendMail(mail,subject,html)
-          }
+        
 
           return {
             code: 200,
@@ -292,10 +297,97 @@ class OrderService {
       };
     }
   };
-
-  static getOrderByStatus = async ({ TrangThai }) => {
+  static changeStatus = async ({id,TrangThai}) => {
     try {
-      const orders = await orderModel.find({ TrangThai })
+      const updateOrder = await orderModel.findOneAndUpdate({
+        _id: id
+    },{
+      TrangThai,
+    },{
+        new: true
+    })
+      
+      if(TrangThai==1){
+          let subject = `Đơn đặt ${updateOrder.LoaiPhieuDat == 0? "bàn" :"phòng"} thành công`;
+          
+          let mail = updateOrder.Email
+           
+          let html = templateMailSendOrder(LoaiPhieuDat)
+
+          let check = sendMail(mail,subject,html)
+      }
+      if(TrangThai==2){
+        
+      }
+      if(TrangThai==3){
+        
+      }
+
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          data: {
+            Order: updateOrder,
+          },
+        },
+      };
+        
+
+    
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "update order error",
+        },
+      };
+    }
+  };
+  static getOrderByAll = async ({ LoaiPhieuDat, TrangThai , SoLuongNguoiTrenBanOrPhong 
+    , SoLuongBanOrPhong , ThoiGianBatDau, GhiChu , HoTen , Email ,SoDienThoai ,MaNhanVien ,MaKhachHang }) => {
+    try {
+      let query = {}
+      if(LoaiPhieuDat ==0 || LoaiPhieuDat){
+        query.LoaiPhieuDat = LoaiPhieuDat
+      }
+      if(TrangThai == 0 || TrangThai){
+        query.TrangThai = TrangThai
+      }
+      if(SoLuongNguoiTrenBanOrPhong){
+        query.SoLuongNguoiTrenBanOrPhong = SoLuongNguoiTrenBanOrPhong
+      }
+      if(SoLuongBanOrPhong){
+        query.SoLuongBanOrPhong = SoLuongBanOrPhong
+      }
+      if(ThoiGianBatDau){
+        const date = new Date(ThoiGianBatDau);
+        const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+
+        query.ThoiGianBatDau = { $gte: start, $lt: end };
+      }
+      if(GhiChu){
+        query.GhiChu = { $regex: GhiChu , $options: 'i'}
+      }
+      if(HoTen){
+        query.HoTen = { $regex: HoTen , $options: 'i'}
+      }
+      if(Email){
+        query.Email = { $regex: Email , $options: 'i'}
+      }
+      if(SoDienThoai){
+        query.SoDienThoai = SoDienThoai
+      }
+      if(MaNhanVien){
+        query.MaNhanVien = MaNhanVien
+      }
+      if(MaKhachHang){
+        query.MaKhachHang = MaKhachHang
+      }
+      const orders = await orderModel.find(query)
       return {
         code: 200,
         metadata: {
@@ -314,6 +406,7 @@ class OrderService {
       };
     }
   };
+  
 
 
 }

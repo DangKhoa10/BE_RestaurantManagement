@@ -49,6 +49,22 @@ class OrderController {
       next(err);
     }
   };
+  changeStatus = async (req, res, next) => {
+    try {
+      const result = await OrderService.changeStatus(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  getOrderByAll = async (req, res, next) => {
+    try {
+      const result = await OrderService.getOrderByAll(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = new OrderController();

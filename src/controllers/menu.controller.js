@@ -27,7 +27,6 @@ class MenuController {
     }
   };
 
-
   getAllMenu = async (req, res, next) => {
     try {
       const result = await MenuService.getAllMenu(req.body);

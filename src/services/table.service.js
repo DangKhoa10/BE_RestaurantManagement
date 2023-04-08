@@ -204,15 +204,20 @@ class TableService{
     static getTableByAll = async ({MaBan,SoThuTuBan , TrangThai , SoChoNgoi , MaPhong }) => {
         try {
             let query = {
-                    MaBan: { $regex: MaBan, $options: 'i' },
-                    SoChoNgoi: { $gte: SoChoNgoi },
+                    
                 }
+            if(MaBan){
+                query.MaBan = { $regex: MaBan, $options: 'i' }
+            }
+            if(SoChoNgoi){
+                query.SoChoNgoi = { $gte: SoChoNgoi }
+            }
             if(MaPhong){
                 query.MaPhong = MaPhong
             }
             if(SoThuTuBan){
                 query.SoThuTuBan = SoThuTuBan
-            }if(TrangThai){
+            }if(TrangThai == 0 || TrangThai){
                 query.TrangThai = TrangThai
             }
            

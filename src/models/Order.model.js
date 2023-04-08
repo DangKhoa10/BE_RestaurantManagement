@@ -16,12 +16,11 @@ const orderSchema = new Schema(
       required: true,
     },
     /**
-     * 0 đang chờ duyệt
-     * 1 đã duyệt
-     * 2
-     * 3
-     * 4
-     * 5
+     * 0 chờ xác nhận
+     * 1 chờ đặt cọc
+     * 2 chờ nhận đơn
+     * 3 kết thúc
+     * 4 Đã hủy
      */
     TrangThai: {
       type: Number,

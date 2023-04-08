@@ -178,13 +178,22 @@ class AreaService {
     SoNguoiToiDa,
   }) => {
     try {
-      let query = {
-        MaBan: { $regex: MaBan, $options: "i" },
-        TenKhuVuc: { $regex: TenKhuVuc, $options: "i" },
-        MoTa: { $regex: MoTa, $options: "i" },
-        ViTriCuThe: { $regex: ViTriCuThe, $options: "i" },
-        SoNguoiToiDa: { $gte: SoNguoiToiDa },
-      };
+      let query = {};
+      if(MaBan){
+        query.MaBan = { $regex: MaBan, $options: "i" }
+      }
+      if(TenKhuVuc){
+        query.TenKhuVuc = { $regex: TenKhuVuc, $options: "i" }
+      }
+      if(MoTa){
+        query.MoTa = { $regex: MoTa, $options: "i" }
+      }
+      if(ViTriCuThe){
+        query.ViTriCuThe = { $regex: ViTriCuThe, $options: "i" }
+      }
+      if(SoNguoiToiDa == 0||SoNguoiToiDa){
+        query.SoNguoiToiDa = { $gte: SoNguoiToiDa }
+      }
 
       const areas = await areaModel.find(query);
       return {

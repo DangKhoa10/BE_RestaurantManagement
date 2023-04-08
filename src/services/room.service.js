@@ -281,18 +281,23 @@ class RoomService {
 
     static getRoomByAll = async ({MaPhong,TenPhong , TrangThai , SoChoNgoiToiDa , MaLoai , MaKhuVuc}) => {
         try {
-            let query = {
-                    MaPhong: { $regex: MaPhong, $options: 'i' },
-                    TenPhong: { $regex: TenPhong , $options: 'i'},
-                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
-                }
+            let query = {}
+            if(MaPhong){
+              query.MaPhong = { $regex: MaPhong, $options: 'i' }
+            }
+            if(TenPhong){
+              query.TenPhong = { $regex: TenPhong , $options: 'i'}
+            }
+            if(SoChoNgoiToiDa == 0 || SoChoNgoiToiDa){
+              query.SoChoNgoiToiDa = { $gte: SoChoNgoiToiDa }
+            }
             if(MaLoai){
                 query.MaLoai = MaLoai
             }
             if(MaKhuVuc){
                 query.MaKhuVuc = MaKhuVuc
             }
-            if(TrangThai){
+            if(TrangThai ==0 || TrangThai){
                 query.TrangThai = TrangThai
             }
             

@@ -135,15 +135,22 @@ static deleteMenu = async ({id})=>{
   static getMenuByAll = async ({TenMon,GiaMon , DonViTinh , MoTa , MaLoai }) => {
     try {
         let query = {
-              TenMon: { $regex: TenMon , $options: 'i'},
-              DonViTinh: { $regex: DonViTinh , $options: 'i'},
-              MoTa: { $regex: MoTa , $options: 'i'},
-              GiaMon: { $gte: GiaMon? GiaMon : 0 },
-            }
+          }
+        if(TenMon){
+          query.TenMon = { $regex: TenMon , $options: 'i'}
+        }
+        if(DonViTinh){
+            query.DonViTinh = { $regex: DonViTinh , $options: 'i'}
+        }
+        if(MoTa){
+          query.MoTa = { $regex: MoTa , $options: 'i'}
+        }
+        if(GiaMon == 0|| GiaMon){
+            query.GiaMon = { $gte:  GiaMon  }
+        }
         if(MaLoai){
             query.MaLoai = MaLoai
         }
-        
         const menus = await menuModel.find(query)
             .populate('MaLoai')
         return {

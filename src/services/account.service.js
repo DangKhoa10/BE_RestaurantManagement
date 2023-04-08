@@ -67,7 +67,7 @@ class AccountService {
                 const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
                 
                 //Gửi mail
-                let subject = "Xác thực tài khoản"
+                let subject = "Verify Account"
                 let mail = Email
                 let html = templateMailSendOTP(OTP)
 
@@ -126,7 +126,7 @@ class AccountService {
             const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
             
             //Gửi mail
-            let subject = "Xác thực tài khoản"
+            let subject = "Verify Account"
             let mail = Email
             let html = templateMailSendOTP(OTP)
 
@@ -303,7 +303,7 @@ class AccountService {
             const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
             
             //Gửi mail
-            let subject = "Xác thực tài khoản"
+            let subject = "Verify Account"
             let mail = Email
             let html = templateMailSendOTP(OTP)
 

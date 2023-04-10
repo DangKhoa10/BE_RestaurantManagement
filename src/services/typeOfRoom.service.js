@@ -2,10 +2,10 @@ const model = require('../models/typeOfRoom.model')
 
 class TypeOfRoomService{
 
-    static addTypeOfRoom = async ({TenLoai,DonGia , DonViTinh})=>{
+    static addTypeOfRoom = async ({MaLoai,TenLoai,DonGia , DonViTinh})=>{
         try{
             const newTypeOfRoom = await model.create({
-                TenLoai,DonGia , DonViTinh
+                MaLoai,TenLoai,DonGia , DonViTinh
             })
             if(newTypeOfRoom){
                 return {
@@ -29,12 +29,12 @@ class TypeOfRoomService{
         }
     }
 
-    static updateTypeOfRoom = async ({id,TenLoai,DonGia , DonViTinh})=>{
+    static updateTypeOfRoom = async ({id,MaLoai,TenLoai,DonGia , DonViTinh})=>{
         try{
             const updateTypeOfRoom = await model.findOneAndUpdate({
                 _id: id
             },{
-                TenLoai,DonGia , DonViTinh
+                MaLoai,TenLoai,DonGia , DonViTinh
             },{
                 new: true
             })
@@ -107,27 +107,27 @@ class TypeOfRoomService{
         }
     }
 
-    // static getTableById = async (id) => {
-    //     try {
-    //       const table = await modelTable.findOne({ _id: id });
-    //       return {
-    //         code: 200,
-    //         metadata: {
-    //           success: true,
-    //           data: table,
-    //         },
-    //       };
-    //     } catch (err) {
-    //       return {
-    //         code: 500,
-    //         metadata: {
-    //           success: false,
-    //           message: err.message,
-    //           status: "get table error",
-    //         },
-    //       };
-    //     }
-    //   };
+    static getTypeOfRoomById = async ({MaLoai}) => {
+        try {
+          const typeOfRoom = await model.findOne({ MaLoai: MaLoai });
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: typeOfRoom,
+            },
+          };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get typeOfRoom error",
+            },
+          };
+        }
+      };
 }
 
 module.exports = TypeOfRoomService;

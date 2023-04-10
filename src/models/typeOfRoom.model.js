@@ -5,9 +5,13 @@ const COLLECTION_NAME = 'LoaiPhong';
 const DOCUMENT_NAME = 'LoaiPhong';
 
 const typeOfRoomSchema = new Schema({
+    
     TenLoai:{
         type:String,
         required:true,
+    },
+    MaLoai:{
+        type: Number,
     },
     DonGia:{
         type: Number,

@@ -308,13 +308,13 @@ class OrderService {
     })
       
       if(TrangThai==1){
-          let subject = `Đơn đặt ${updateOrder.LoaiPhieuDat == 0? "bàn" :"phòng"} thành công`;
+          // let subject = `Đơn đặt ${updateOrder.LoaiPhieuDat == 0? "bàn" :"phòng"} thành công`;
           
-          let mail = updateOrder.Email
+          // let mail = updateOrder.Email
            
-          let html = templateMailSendOrder(LoaiPhieuDat)
+          // let html = templateMailSendOrder(LoaiPhieuDat)
 
-          let check = sendMail(mail,subject,html)
+          // let check = sendMail(mail,subject,html)
       }
       if(TrangThai==2){
         

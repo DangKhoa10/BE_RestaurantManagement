@@ -54,6 +54,15 @@ class AccountController {
       next(err);
     }
   };
+
+  getAccountById = async (req, res, next) => {
+    try {
+      const result = await AccountService.getAccountById(req.params.userId);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = new AccountController();

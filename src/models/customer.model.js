@@ -11,6 +11,9 @@ const customerSchema = new Schema({
     SoDienThoai:{
         type: String,
     },
+    HinhAnh:{
+        type: String
+    },
     DiaChi:{
         type: String,
     },

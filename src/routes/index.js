@@ -16,10 +16,6 @@ router.use("/api/typeOfRoom", require("./typeOfRoom"));
 router.use("/api/typeOfMenu", require("./typeOfMenu"));
 router.use("/api/image", require("./image"));
 
-// router.get('', (req, res , next) => {
-//     return res.status(200).json({
-//         message: 'OK',
-//     })
-// })
+
 
 module.exports = router;

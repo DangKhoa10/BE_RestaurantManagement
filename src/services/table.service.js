@@ -217,7 +217,7 @@ class TableService{
             }
             if(SoThuTuBan){
                 query.SoThuTuBan = SoThuTuBan
-            }if(TrangThai == 0 || TrangThai){
+            }if(TrangThai === 0 || TrangThai){
                 query.TrangThai = TrangThai
             }
            

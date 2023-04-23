@@ -288,7 +288,7 @@ class RoomService {
             if(TenPhong){
               query.TenPhong = { $regex: TenPhong , $options: 'i'}
             }
-            if(SoChoNgoiToiDa == 0 || SoChoNgoiToiDa){
+            if(SoChoNgoiToiDa === 0 || SoChoNgoiToiDa){
               query.SoChoNgoiToiDa = { $gte: SoChoNgoiToiDa }
             }
             if(MaLoai){
@@ -297,7 +297,7 @@ class RoomService {
             if(MaKhuVuc){
                 query.MaKhuVuc = MaKhuVuc
             }
-            if(TrangThai ==0 || TrangThai){
+            if(TrangThai ===0 || TrangThai){
                 query.TrangThai = TrangThai
             }
             

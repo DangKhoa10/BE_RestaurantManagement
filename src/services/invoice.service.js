@@ -69,6 +69,14 @@ class InvoiceService {
     static getInvoiceById = async ({ id }) => {
         try {
           const invoice = await invoiceModel.findOne({ _id: id })
+            .populate("ListThucDon.MaThucDon")
+            .populate({
+              path: "ListPhong",
+              populate: {
+                path: "MaLoai",
+              },
+            })
+            .populate("ListBan")
           return {
             code: 200,
             metadata: {
@@ -129,7 +137,16 @@ class InvoiceService {
             }
             
             
-            const invoices = await invoiceModel.find(query).populate("MaNhanVien")
+            const invoices = await invoiceModel.find(query)
+            .populate("MaNhanVien")
+            .populate("ListThucDon.MaThucDon")
+            .populate({
+              path: "ListPhong",
+              populate: {
+                path: "MaLoai",
+              },
+            })
+            .populate("ListBan")
             .sort({ createdAt: -1 })
                 
             return {

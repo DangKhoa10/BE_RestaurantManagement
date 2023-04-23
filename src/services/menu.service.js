@@ -145,7 +145,7 @@ static deleteMenu = async ({id})=>{
         if(MoTa){
           query.MoTa = { $regex: MoTa , $options: 'i'}
         }
-        if(GiaMon == 0|| GiaMon){
+        if(GiaMon === 0|| GiaMon){
             query.GiaMon = { $gte:  GiaMon  }
         }
         if(MaLoai){

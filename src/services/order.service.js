@@ -58,7 +58,7 @@ class OrderService {
 
         if (newOrderDetail) {
           let subject = `Yêu cầu đặt ${
-            LoaiPhieuDat == 0 ? "bàn" : "phòng"
+            LoaiPhieuDat === 0 ? "bàn" : "phòng"
           } thành công`;
 
           let mail = Email;

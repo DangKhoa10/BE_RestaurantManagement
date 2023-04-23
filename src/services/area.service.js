@@ -179,8 +179,8 @@ class AreaService {
   }) => {
     try {
       let query = {};
-      if(MaBan){
-        query.MaBan = { $regex: MaBan, $options: "i" }
+      if(MaKhuVuc){
+        query.MaKhuVuc = { $regex: MaKhuVuc, $options: "i" }
       }
       if(TenKhuVuc){
         query.TenKhuVuc = { $regex: TenKhuVuc, $options: "i" }
@@ -191,7 +191,7 @@ class AreaService {
       if(ViTriCuThe){
         query.ViTriCuThe = { $regex: ViTriCuThe, $options: "i" }
       }
-      if(SoNguoiToiDa == 0||SoNguoiToiDa){
+      if(SoNguoiToiDa === 0||SoNguoiToiDa){
         query.SoNguoiToiDa = { $gte: SoNguoiToiDa }
       }
 

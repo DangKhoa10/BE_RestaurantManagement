@@ -1,5 +1,6 @@
 const accountModel = require("../models/account.model");
 const customerModel = require("../models/customer.model");
+const employeeModel = require("../models/employee.model");
 const otpModel = require("../models/otp.model");
 const JWT = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -219,9 +220,18 @@ class AccountService {
           .find({ _id: decode.userId })
           .select("-MatKhau")
           .lean();
-        const customer = await customerModel
+
+        let customer
+        if(account.LoaiTaiKhoan===0) {
+          customer = await customerModel
           .find({ MaTaiKhoan: decode.userId })
           .lean();
+        }else{
+          customer = await employeeModel
+          .find({ MaTaiKhoan: decode.userId })
+          .lean();
+        }
+        
 
         return {
           code: 200,

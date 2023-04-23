@@ -363,10 +363,10 @@ class OrderService {
   }) => {
     try {
       let query = {};
-      if (LoaiPhieuDat == 0 || LoaiPhieuDat) {
+      if (LoaiPhieuDat === 0 || LoaiPhieuDat) {
         query.LoaiPhieuDat = LoaiPhieuDat;
       }
-      if (TrangThai == 0 || TrangThai) {
+      if (TrangThai === 0 || TrangThai) {
         query.TrangThai = TrangThai;
       }
       if (SoLuongNguoiTrenBanOrPhong) {
@@ -408,7 +408,7 @@ class OrderService {
       if (MaKhachHang) {
         query.MaKhachHang = MaKhachHang;
       }
-      const orders = await orderModel.find(query);
+      const orders = await orderModel.find(query).sort({ createdAt: -1 })
       return {
         code: 200,
         metadata: {

@@ -121,15 +121,16 @@ class InvoiceService {
             if(MaNhanVien){
                 query.MaNhanVien = MaNhanVien
             }
-            if(TrangThai ==0 || TrangThai){
+            if(TrangThai ===0 || TrangThai){
                 query.TrangThai = TrangThai
             }
-            if(LoaiHoaDon ==0 || LoaiHoaDon){
+            if(LoaiHoaDon ===0 || LoaiHoaDon){
                 query.LoaiHoaDon = LoaiHoaDon
             }
             
             
-            const invoices = await invoiceModel.find(query)
+            const invoices = await invoiceModel.find(query).populate("MaNhanVien")
+            .sort({ createdAt: -1 })
                 
             return {
                 code: 200,

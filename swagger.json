@@ -1,0 +1,55 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "API Khách hàng",
+      "description": "API để quản lý thông tin khách hàng",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/api/customer/{id}": {
+        "get": {
+          "summary": "Lấy thông tin khách hàng",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID của khách hàng",
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Thành công",
+              "schema": {
+                "$ref": "#/definitions/Customer"
+              }
+            },
+            "404": {
+              "description": "Không tìm thấy khách hàng"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+  

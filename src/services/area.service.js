@@ -191,7 +191,7 @@ class AreaService {
       if (ViTriCuThe) {
         query.ViTriCuThe = { $regex: ViTriCuThe, $options: "i" };
       }
-      if (SoNguoiToiDa == 0 || SoNguoiToiDa) {
+      if (SoNguoiToiDa === 0 || SoNguoiToiDa) {
         query.SoNguoiToiDa = { $gte: SoNguoiToiDa };
       }
 

@@ -10,6 +10,9 @@ const typeOfRoomSchema = new Schema(
       type: String,
       required: true,
     },
+    MaLoai: {
+      type: Number,
+    },
     DonGia: {
       type: Number,
       required: true,

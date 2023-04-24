@@ -30,15 +30,15 @@ class TypeOfRoomController{
             next(err);
         }
     }
-    // getTableById = async (req, res, next) => {
-    //     try {
-    //         const result = await TypeOfRoomService.getTableById(req.params.tableId);
-    //         return res.status(result.code).json(result.metadata)
-    //     }
-    //     catch (err){
-    //         next(err);
-    //     }
-    // }
+    getTypeOfRoomById = async (req, res, next) => {
+        try {
+            const result = await TypeOfRoomService.getTypeOfRoomById(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
 
     getAllTypeOfRoom = async (req, res, next) => {
         try {

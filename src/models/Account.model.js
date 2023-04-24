@@ -24,9 +24,6 @@ const accountSchema = new Schema({
         enum: [0,1,2],
         default: 0,
     },
-    HinhAnh:{
-        type: String
-    },
     TrangThai:{
         type: Number
     },

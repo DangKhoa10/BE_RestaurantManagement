@@ -64,6 +64,33 @@ class RoomService {
             }
         }
     }
+    static updateManyRoom = async ({ids,TrangThai})=>{
+      try{
+          await roomModel.updateMany({
+              _id: { $in: ids } 
+          },{
+               TrangThai
+          })
+          return {
+              code: 200,
+              metadata:{
+                  success: true,
+                  message: 'Update thành công',
+              }
+          }
+          
+      }
+      catch(err){
+          return {
+              code: 500,
+              metadata:{
+                  success: false,
+                  message: err.message,
+                  status: 'update room error',
+              }
+          }
+      }
+  }
     static deleteRoom = async ({id})=>{
         try{
             await roomModel.deleteOne({ _id: id })
@@ -288,7 +315,7 @@ class RoomService {
             if(TenPhong){
               query.TenPhong = { $regex: TenPhong , $options: 'i'}
             }
-            if(SoChoNgoiToiDa == 0 || SoChoNgoiToiDa){
+            if(SoChoNgoiToiDa === 0 || SoChoNgoiToiDa){
               query.SoChoNgoiToiDa = { $gte: SoChoNgoiToiDa }
             }
             if(MaLoai){
@@ -297,7 +324,7 @@ class RoomService {
             if(MaKhuVuc){
                 query.MaKhuVuc = MaKhuVuc
             }
-            if(TrangThai ==0 || TrangThai){
+            if(TrangThai ===0 || TrangThai){
                 query.TrangThai = TrangThai
             }
             

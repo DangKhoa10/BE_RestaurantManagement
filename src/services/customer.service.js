@@ -49,10 +49,10 @@ class CustomerService {
             }
         }
     }
-    static addCustomer = async ({TenKhachHang , SoDienThoai , DiaChi , NgaySinh, GioiTinh ,Email, MaTaiKhoan})=>{
+    static addCustomer = async ({TenKhachHang, HinhAnh , SoDienThoai , DiaChi , NgaySinh, GioiTinh ,Email, MaTaiKhoan})=>{
         try{
             const newCustomer = await customerModel.create({
-                TenKhachHang , SoDienThoai , DiaChi , NgaySinh, GioiTinh ,Email, MaTaiKhoan
+                TenKhachHang, HinhAnh , SoDienThoai , DiaChi , NgaySinh, GioiTinh ,Email, MaTaiKhoan
             })
             if(newCustomer){
                 return {
@@ -75,12 +75,12 @@ class CustomerService {
             }
         }
     }
-    static updateCustomer = async ({id,TenKhachHang , SoDienThoai , DiaChi , NgaySinh, GioiTinh })=>{
+    static updateCustomer = async ({id,TenKhachHang ,HinhAnh, SoDienThoai , DiaChi , NgaySinh, GioiTinh })=>{
         try{
             const customer = await customerModel.findOneAndUpdate({
                 _id: id
             },{
-                TenKhachHang , SoDienThoai , DiaChi , NgaySinh, GioiTinh 
+                TenKhachHang, HinhAnh , SoDienThoai , DiaChi , NgaySinh, GioiTinh 
             },{
                 new: true
             })

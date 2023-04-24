@@ -21,6 +21,15 @@ class RoomController{
             next(err);
         }
     }
+    updateManyRoom = async (req, res, next) => {
+        try {
+            const result = await RoomService.updateManyRoom(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
     deleteRoom = async (req, res, next) => {
         try {
             const result = await RoomService.deleteRoom(req.body);

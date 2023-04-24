@@ -58,7 +58,7 @@ class OrderService {
 
         if (newOrderDetail) {
           let subject = `Yêu cầu đặt ${
-            LoaiPhieuDat == 0 ? "bàn" : "phòng"
+            LoaiPhieuDat === 0 ? "bàn" : "phòng"
           } thành công`;
 
           let mail = Email;
@@ -306,28 +306,22 @@ class OrderService {
   };
   static changeStatus = async ({ id, TrangThai }) => {
     try {
-      const updateOrder = await orderModel.findOneAndUpdate(
-        {
-          _id: id,
-        },
-        {
-          TrangThai,
-        },
-        {
-          new: true,
-        }
-      );
+      const updateOrder = await orderModel.findOneAndUpdate({
+        _id: id
+    },{
+      TrangThai,
+    },{
+        new: true
+    })
+      
+      if(TrangThai==1){
+          // let subject = `Đơn đặt ${updateOrder.LoaiPhieuDat == 0? "bàn" :"phòng"} thành công`;
+          
+          // let mail = updateOrder.Email
+           
+          // let html = templateMailSendOrder(LoaiPhieuDat)
 
-      if (TrangThai == 1) {
-        let subject = `Đơn đặt ${
-          updateOrder.LoaiPhieuDat == 0 ? "bàn" : "phòng"
-        } thành công`;
-
-        let mail = updateOrder.Email;
-
-        let html = templateMailSendOrder(LoaiPhieuDat);
-
-        let check = sendMail(mail, subject, html);
+          // let check = sendMail(mail,subject,html)
       }
       if (TrangThai == 2) {
       }
@@ -369,10 +363,10 @@ class OrderService {
   }) => {
     try {
       let query = {};
-      if (LoaiPhieuDat == 0 || LoaiPhieuDat) {
+      if (LoaiPhieuDat === 0 || LoaiPhieuDat) {
         query.LoaiPhieuDat = LoaiPhieuDat;
       }
-      if (TrangThai == 0 || TrangThai) {
+      if (TrangThai === 0 || TrangThai) {
         query.TrangThai = TrangThai;
       }
       if (SoLuongNguoiTrenBanOrPhong) {
@@ -414,7 +408,7 @@ class OrderService {
       if (MaKhachHang) {
         query.MaKhachHang = MaKhachHang;
       }
-      const orders = await orderModel.find(query);
+      const orders = await orderModel.find(query).sort({ createdAt: -1 })
       return {
         code: 200,
         metadata: {

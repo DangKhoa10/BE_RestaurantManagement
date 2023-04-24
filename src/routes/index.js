@@ -10,15 +10,13 @@ router.use("/api/area", require("./area"));
 router.use("/api/room", require("./room"));
 router.use("/api/account", require("./account"));
 router.use("/api/order", require("./order"));
+router.use("/api/invoice", require("./invoice"));
 router.use("/api/customer", require("./customer"));
+router.use("/api/employee", require("./employee"));
 router.use("/api/typeOfRoom", require("./typeOfRoom"));
 router.use("/api/typeOfMenu", require("./typeOfMenu"));
 router.use("/api/image", require("./image"));
 
-// router.get('', (req, res , next) => {
-//     return res.status(200).json({
-//         message: 'OK',
-//     })
-// })
+
 
 module.exports = router;

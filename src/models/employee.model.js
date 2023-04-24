@@ -15,6 +15,9 @@ const employeeSchema = new Schema({
     DiaChi:{
         type: String,
     },
+    HinhAnh:{
+        type: String
+    },
     NgaySinh:{
         type: Date
     },

@@ -69,6 +69,7 @@ class InvoiceService {
     static getInvoiceById = async ({ id }) => {
         try {
           const invoice = await invoiceModel.findOne({ _id: id })
+            .populate("MaPhieuDat")
             .populate("ListThucDon.MaThucDon")
             .populate({
               path: "ListPhong",
@@ -167,6 +168,63 @@ class InvoiceService {
           };
         }
     };
+    static getInvoiceFromDateToDate = async ({ThoiGianBatDau , ThoiGianKetThuc, LoaiHoaDon}) => {
+      try {
+              let query = {}
+              const dateS = new Date(ThoiGianBatDau);
+              const dateE = new Date(ThoiGianKetThuc);
+              if(dateS.getTime() == dateE.getTime()){
+                const start = new Date(
+                  dateS.getFullYear(),
+                  dateS.getMonth(),
+                  dateS.getDate()
+                );
+                const end = new Date(
+                  dateS.getFullYear(),
+                  dateS.getMonth(),
+                  dateS.getDate() + 1
+                );
+                query.ThoiGianBatDau = { $gte: start, $lt: end };
+              }else{
+                query.ThoiGianBatDau = { $gte: dateS, $lte: dateE };
+              }
+
+              if(LoaiHoaDon === 0 || LoaiHoaDon === 1 || LoaiHoaDon === 2){
+                query.LoaiHoaDon = LoaiHoaDon
+              }
+              query.TrangThai == 1
+      
+          
+          const invoices = await invoiceModel.find(query)
+          .populate("MaNhanVien")
+          .populate("ListThucDon.MaThucDon")
+          .populate({
+            path: "ListPhong",
+            populate: {
+              path: "MaLoai",
+            },
+          })
+          .populate("ListBan")
+          .sort({ createdAt: -1 })
+              
+          return {
+              code: 200,
+              metadata: {
+              success: true,
+              data: invoices,
+              },
+          };
+      } catch (err) {
+        return {
+          code: 500,
+          metadata: {
+            success: false,
+            message: err.message,
+            status: "get invoices error",
+          },
+        };
+      }
+  };
 
     
 

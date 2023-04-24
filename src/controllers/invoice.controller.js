@@ -19,7 +19,16 @@ class InvoiceController {
   };
   getInvoiceById = async (req, res, next) => {
     try {
-      const result = await InvoiceService.getInvoiceById(req.params);
+      const result = await InvoiceService.getInvoiceById(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  
+  getInvoiceFromDateToDate = async (req, res, next) => {
+    try {
+      const result = await InvoiceService.getInvoiceFromDateToDate(req.body);
       return res.status(result.code).json(result.metadata);
     } catch (err) {
       next(err);

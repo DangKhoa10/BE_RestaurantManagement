@@ -179,20 +179,20 @@ class AreaService {
   }) => {
     try {
       let query = {};
-      if(MaBan){
-        query.MaBan = { $regex: MaBan, $options: "i" }
+      if (MaKhuVuc) {
+        query.MaKhuVuc = { $regex: MaKhuVuc, $options: "i" };
       }
-      if(TenKhuVuc){
-        query.TenKhuVuc = { $regex: TenKhuVuc, $options: "i" }
+      if (TenKhuVuc) {
+        query.TenKhuVuc = { $regex: TenKhuVuc, $options: "i" };
       }
-      if(MoTa){
-        query.MoTa = { $regex: MoTa, $options: "i" }
+      if (MoTa) {
+        query.MoTa = { $regex: MoTa, $options: "i" };
       }
-      if(ViTriCuThe){
-        query.ViTriCuThe = { $regex: ViTriCuThe, $options: "i" }
+      if (ViTriCuThe) {
+        query.ViTriCuThe = { $regex: ViTriCuThe, $options: "i" };
       }
-      if(SoNguoiToiDa == 0||SoNguoiToiDa){
-        query.SoNguoiToiDa = { $gte: SoNguoiToiDa }
+      if (SoNguoiToiDa == 0 || SoNguoiToiDa) {
+        query.SoNguoiToiDa = { $gte: SoNguoiToiDa };
       }
 
       const areas = await areaModel.find(query);

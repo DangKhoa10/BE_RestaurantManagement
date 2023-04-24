@@ -64,6 +64,33 @@ class RoomService {
             }
         }
     }
+    static updateManyRoom = async ({ids,TrangThai})=>{
+      try{
+          await roomModel.updateMany({
+              _id: { $in: ids } 
+          },{
+               TrangThai
+          })
+          return {
+              code: 200,
+              metadata:{
+                  success: true,
+                  message: 'Update thành công',
+              }
+          }
+          
+      }
+      catch(err){
+          return {
+              code: 500,
+              metadata:{
+                  success: false,
+                  message: err.message,
+                  status: 'update room error',
+              }
+          }
+      }
+  }
     static deleteRoom = async ({id})=>{
         try{
             await roomModel.deleteOne({ _id: id })

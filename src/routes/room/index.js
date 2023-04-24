@@ -6,6 +6,7 @@ router.get("/getAllRoom", roomController.getAllRoom);
 router.get("/getRoomById/:roomId", roomController.getRoomById);
 router.post("/addRoom", roomController.addRoom);
 router.post("/updateRoom", roomController.updateRoom);
+router.post("/updateManyRoom", roomController.updateManyRoom);
 router.post("/deleteRoom", roomController.deleteRoom);
 router.post("/getRoomMatchTimeAndSeat", roomController.getRoomMatchTimeAndSeat);
 router.post("/getRoomByAreaId", roomController.getRoomByAreaId);

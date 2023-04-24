@@ -60,6 +60,33 @@ class TableService{
             }
         }
     }
+    static updateManyTable = async ({ids,TrangThai})=>{
+        try{
+            await modelTable.updateMany({
+                _id: { $in: ids } 
+            },{
+                 TrangThai
+            })
+            return {
+                code: 200,
+                metadata:{
+                    success: true,
+                    message: 'Update thành công',
+                }
+            }
+            
+        }
+        catch(err){
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: err.message,
+                    status: 'update table error',
+                }
+            }
+        }
+    }
     static deleteTable = async ({id})=>{
         try{
             await modelTable.deleteOne({ _id: id })

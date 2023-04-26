@@ -15,6 +15,7 @@ class OrderService {
     SoLuongBanOrPhong,
     ThoiGianBatDau,
     MaKhachHang,
+    MaNhanVien,
     ListThucDon,
     ListPhong,
     ListBan,
@@ -43,6 +44,7 @@ class OrderService {
         SoLuongBanOrPhong,
         ThoiGianBatDau,
         MaKhachHang: MaKH,
+        MaNhanVien: MaNhanVien ? MaNhanVien : null,
         HoTen,
         Email,
         SoDienThoai,
@@ -136,6 +138,12 @@ class OrderService {
           path: "MaPhieuDat",
           populate: {
             path: "MaKhachHang",
+          },
+        })
+        .populate({
+          path: "MaPhieuDat",
+          populate: {
+            path: "MaNhanVien",
           },
         })
         .populate("ListThucDon.MaThucDon")

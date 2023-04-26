@@ -61,7 +61,7 @@ class MenuService {
             }
         }
     }
-}
+  }
 static deleteMenu = async ({id})=>{
     try{
         await menuModel.deleteOne({ _id: id })

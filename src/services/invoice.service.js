@@ -3,8 +3,6 @@ const invoiceModel = require("../models/invoice.model")
 
 class InvoiceService {
 
-
-
     static addInvoice = async ({MaPhieuDat,MaNhanVien , MaKhachHang , HoTen , SoDienThoai, 
         LoaiHoaDon , TrangThai,ThoiGianBatDau, ListThucDon,ListPhong,ListBan})=>{
         try{

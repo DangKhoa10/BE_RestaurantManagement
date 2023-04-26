@@ -44,7 +44,7 @@ class OrderService {
         SoLuongBanOrPhong,
         ThoiGianBatDau,
         MaKhachHang: MaKH,
-        MaNhanVien: MaNhanVien ? MaNhanVien : null,
+        MaNhanVien: MaNhanVien,
         HoTen,
         Email,
         SoDienThoai,

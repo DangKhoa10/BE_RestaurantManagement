@@ -17,6 +17,9 @@ const postSchema = new Schema({
     NoiBat:{
         type: Boolean,
     },
+    HienThi:{
+        type: Boolean,
+    },
     ThuTuBaiViet:{
         type: Number,
     },

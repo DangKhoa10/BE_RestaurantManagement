@@ -1,3 +1,4 @@
+const { Query } = require("mongoose");
 const postModel = require("../models/post.model");
 const typePostModel = require("../models/typePost.model");
 
@@ -9,7 +10,8 @@ class PostService {
         MaNhanVien,
         MaLoai,
         NoiBat,
-        ThuTuBaiViet
+        ThuTuBaiViet,
+        HienThi
     }) => {
         try {
             const post = await postModel.create({
@@ -19,7 +21,7 @@ class PostService {
                 MaNhanVien,
                 MaLoai,
                 NoiBat,
-                ThuTuBaiViet
+                ThuTuBaiViet,HienThi
             });
             if (post) {
                 return {
@@ -47,7 +49,7 @@ class PostService {
         TieuDe,
         NoiDung,
         AnhNen,
-        MaNhanVien,
+        HienThi,
         MaLoai,
         NoiBat,
         ThuTuBaiViet
@@ -59,10 +61,10 @@ class PostService {
                 TieuDe,
                 NoiDung,
                 AnhNen,
-                MaNhanVien,
                 MaLoai,
                 NoiBat,
-                ThuTuBaiViet
+                ThuTuBaiViet,
+                HienThi
             }, {
                 new: true
             })
@@ -114,9 +116,13 @@ class PostService {
         }
     }
 
-    static getAllPost = async () => {
+    static getAllPost = async ({HienThi}) => {
         try {
-            const posts = await postModel.find().populate('MaLoai').exec();
+            const query = {}
+            if(HienThi === true || HienThi === false) {
+                query.HienThi = HienThi
+            }
+            const posts = await postModel.find(query).populate('MaLoai').exec();
 
             return {
                 code: 200,
@@ -162,12 +168,14 @@ class PostService {
         }
     };
     static getPostByTypeId = async ({
-        MaLoai
+        MaLoai,HienThi
     }) => {
         try {
-            const posts = await postModel.find({
-                MaLoai
-            });
+            const query = {MaLoai}
+            if(HienThi === true || HienThi === false) {
+                query.HienThi = HienThi
+            }
+            const posts = await postModel.find(query);
             return {
                 code: 200,
                 metadata: {

@@ -34,6 +34,14 @@ class InvoiceController {
       next(err);
     }
   };
+  getQuantityMenuFromDateToDate = async (req, res, next) => {
+    try {
+      const result = await InvoiceService.getQuantityMenuFromDateToDate(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
   getInvoiceByAll = async (req, res, next) => {
     try {
       const result = await InvoiceService.getInvoiceByAll(req.body);

@@ -208,12 +208,12 @@ class RoomService {
                       { SoChoNgoiToiDa: { $gte: SoNguoi } },
                       { MaLoai: { $eq: MaLoaiPhong}}
                     ]
-                  }).lean()
+                  }).populate("MaLoai").lean()
             }else{
                 roomMatchs = await roomModel.find({
                     SoChoNgoiToiDa: { $gte: SoNguoi },
                     MaLoai: { $eq: MaLoaiPhong}
-                })
+                }).populate("MaLoai")
             }
 
              

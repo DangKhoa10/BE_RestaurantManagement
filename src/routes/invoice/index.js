@@ -7,5 +7,6 @@ router.post('/updateInvoice', invoiceController.updateInvoice)
 router.post('/getInvoiceByAll', invoiceController.getInvoiceByAll)
 router.post('/getInvoiceById', invoiceController.getInvoiceById)
 router.post('/getInvoiceFromDateToDate', invoiceController.getInvoiceFromDateToDate)
+router.post('/getQuantityMenuFromDateToDate', invoiceController.getQuantityMenuFromDateToDate)
 
 module.exports = router

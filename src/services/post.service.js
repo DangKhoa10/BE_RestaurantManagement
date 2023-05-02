@@ -122,7 +122,9 @@ class PostService {
             if(HienThi === true || HienThi === false) {
                 query.HienThi = HienThi
             }
-            const posts = await postModel.find(query).populate('MaLoai').populate('MaNhanVien').exec();
+            const posts = await postModel.find(query).populate('MaLoai').populate('MaNhanVien').sort({
+                ThuTuBaiViet: 1
+            }).exec()
 
             return {
                 code: 200,
@@ -148,7 +150,7 @@ class PostService {
         try {
             const post = await postModel.findOne({
                 _id: id
-            });
+            }).populate('MaLoai').populate('MaNhanVien')
             return {
                 code: 200,
                 metadata: {

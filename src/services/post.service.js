@@ -196,6 +196,69 @@ class PostService {
             };
         }
     };
+    static getPostByTypeId = async ({
+        MaLoai,HienThi
+    }) => {
+        try {
+            const query = {MaLoai}
+            if(HienThi === true || HienThi === false) {
+                query.HienThi = HienThi
+            }
+            const posts = await postModel.find(query)
+            return {
+                code: 200,
+                metadata: {
+                    success: true,
+                    data: posts,
+                },
+            };
+        } catch (err) {
+            return {
+                code: 500,
+                metadata: {
+                    success: false,
+                    message: err.message,
+                    status: "get post error",
+                },
+            };
+        }
+    };
+static getPostByAll = async ({
+        MaLoai,HienThi,NoiBat
+    }) => {
+        try {
+            const query = {}
+            if(HienThi === true || HienThi === false) {
+                query.HienThi = HienThi
+            }
+            if(MaLoai){
+                query.MaLoai = MaLoai
+            }
+            if(NoiBat === true || NoiBat === false){ 
+                query.NoiBat = NoiBat
+            }
+            const posts = await postModel.find(query).populate('MaLoai').populate('MaNhanVien').sort({
+                ThuTuBaiViet: 1
+            }).exec()
+            return {
+                code: 200,
+                metadata: {
+                    success: true,
+                    data: posts,
+                },
+            };
+        } catch (err) {
+            return {
+                code: 500,
+                metadata: {
+                    success: false,
+                    message: err.message,
+                    status: "get post error",
+                },
+            };
+        }
+    };
+
 
     static addTypePost = async ({
         TenLoai

@@ -12,6 +12,7 @@ router.post("/getAllPost", postController.getAllPost);
 router.post("/getAllTypePost", postController.getAllTypePost);
 router.post("/getPostById", postController.getPostById);
 router.post("/getTypePostById", postController.getTypePostById);
+router.post("/getPostByAll", postController.getPostByAll);
 router.post("/getPostByTypeId", postController.getPostByTypeId);
 
 module.exports = router;

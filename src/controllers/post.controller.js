@@ -53,6 +53,14 @@ class PostController {
             next(err);
         }
     };
+    getPostByAll = async (req, res, next) => {
+        try {
+            const result = await PostService.getPostByAll(req.body);
+            return res.status(result.code).json(result.metadata);
+        } catch (err) {
+            next(err);
+        }
+    };
 
     addTypePost = async (req, res, next) => {
         try {

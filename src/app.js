@@ -24,36 +24,29 @@ require("./dbs/init.mongodb");
 // const { checkOverload } = require("./helpers/check.connect")
 // checkOverload()
 
-
 const swaggerUi = require("swagger-ui-express");
-const swaggerJSDoc = require('swagger-jsdoc');
-
-
+const swaggerJSDoc = require("swagger-jsdoc");
 
 const options = {
-  definition:{
-    openapi: '3.0.0',
+  definition: {
+    openapi: "3.0.0",
     info: {
-      title: 'My App',
-      version: '1.0.0',
-      description: 'API documentation for My App',
+      title: "My App",
+      version: "1.0.0",
+      description: "API documentation for My App",
     },
     servers: [
       {
-        url: 'http://localhost:5500',
+        url: "http://localhost:5500",
       },
     ],
   },
   apis: ["./routes/*.js"],
-
 };
-
 
 const swaggerSpec = swaggerJSDoc(options);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //init routes
 app.use("", require("./routes"));

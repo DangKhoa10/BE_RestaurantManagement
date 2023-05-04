@@ -11,11 +11,26 @@ const postSchema = new Schema({
     NoiDung:{
         type: String,
     },
+    AnhNen:{
+        type: String,
+    },
+    NoiBat:{
+        type: Boolean,
+    },
+    HienThi:{
+        type: Boolean,
+    },
+    ThuTuBaiViet:{
+        type: Number,
+    },
     MaNhanVien:{
         type: Schema.Types.ObjectId,
         ref:'NhanVien'
     },
-
+    MaLoai:{
+        type: Schema.Types.ObjectId,
+        ref:'LoaiBaiViet'
+    }
 },{
     timestamps: true,
     collection: COLLECTION_NAME,

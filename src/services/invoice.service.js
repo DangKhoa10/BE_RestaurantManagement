@@ -1,4 +1,5 @@
 const invoiceModel = require("../models/invoice.model");
+const menuModel = require("../models/menu.model");
 
 class InvoiceService {
   static addInvoice = async ({
@@ -106,7 +107,9 @@ class InvoiceService {
   static getInvoiceById = async ({ id }) => {
     try {
       const invoice = await invoiceModel
-        .findOne({ _id: id })
+        .findOne({
+          _id: id,
+        })
         .populate("MaPhieuDat")
         .populate("ListThucDon.MaThucDon")
         .populate({
@@ -162,10 +165,16 @@ class InvoiceService {
           date.getDate() + 1
         );
 
-        query.ThoiGianBatDau = { $gte: start, $lt: end };
+        query.ThoiGianBatDau = {
+          $gte: start,
+          $lt: end,
+        };
       }
       if (HoTen) {
-        query.HoTen = { $regex: HoTen, $options: "i" };
+        query.HoTen = {
+          $regex: HoTen,
+          $options: "i",
+        };
       }
       if (SoDienThoai) {
         query.SoDienThoai = SoDienThoai;
@@ -194,7 +203,9 @@ class InvoiceService {
           },
         })
         .populate("ListBan")
-        .sort({ createdAt: -1 });
+        .sort({
+          createdAt: -1,
+        });
 
       return {
         code: 200,
@@ -234,15 +245,22 @@ class InvoiceService {
           dateS.getMonth(),
           dateS.getDate() + 1
         );
-        query.ThoiGianBatDau = { $gte: start, $lt: end };
+        query.ThoiGianBatDau = {
+          $gte: start,
+          $lt: end,
+        };
       } else {
-        query.ThoiGianBatDau = { $gte: dateS, $lte: dateE };
+        query.ThoiGianBatDau = {
+          $gte: dateS,
+          $lte: dateE,
+        };
       }
 
       if (LoaiHoaDon === 0 || LoaiHoaDon === 1 || LoaiHoaDon === 2) {
         query.LoaiHoaDon = LoaiHoaDon;
       }
       query.TrangThai == 1;
+
       const invoices = await invoiceModel
         .find(query)
         .populate("MaNhanVien")
@@ -254,7 +272,9 @@ class InvoiceService {
           },
         })
         .populate("ListBan")
-        .sort({ createdAt: -1 });
+        .sort({
+          createdAt: -1,
+        });
 
       return {
         code: 200,
@@ -270,6 +290,104 @@ class InvoiceService {
           success: false,
           message: err.message,
           status: "get invoices error",
+        },
+      };
+    }
+  };
+
+  static getQuantityMenuFromDateToDate = async ({
+    ThoiGianBatDau,
+    ThoiGianKetThuc,
+  }) => {
+    try {
+      let query = {};
+      const dateS = new Date(ThoiGianBatDau);
+      const dateE = new Date(ThoiGianKetThuc);
+      if (dateS.getTime() == dateE.getTime()) {
+        const start = new Date(
+          dateS.getFullYear(),
+          dateS.getMonth(),
+          dateS.getDate()
+        );
+        const end = new Date(
+          dateS.getFullYear(),
+          dateS.getMonth(),
+          dateS.getDate() + 1
+        );
+        query = {
+          $gte: start,
+          $lt: end,
+        };
+      } else {
+        query = {
+          $gte: dateS,
+          $lte: dateE,
+        };
+      }
+      let menus = await invoiceModel
+        .aggregate([
+          {
+            $match: {
+              ThoiGianBatDau: query,
+              TrangThai: 1,
+            },
+          },
+          {
+            $unwind: "$ListThucDon",
+          },
+          {
+            $group: {
+              _id: "$ListThucDon.MaThucDon",
+              SoLuongBan: {
+                $sum: "$ListThucDon.SoLuong",
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: "ThucDon",
+              localField: "_id",
+              foreignField: "_id",
+              as: "thucDon",
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              SoLuongBan: 1,
+              TenMon: "$thucDon.TenMon",
+            },
+          },
+        ])
+        .exec();
+
+      let allMenus = await menuModel.find().lean().exec();
+      let results = [];
+      for (let i = 0; i < allMenus.length; i++) {
+        let index = menus.findIndex(
+          (item) => item._id.toString() === allMenus[i]._id.toString()
+        );
+        let obj = {
+          ...allMenus[i],
+          SoLuongBan: index !== -1 ? menus[index].SoLuongBan : 0,
+        };
+        results.push(obj);
+      }
+
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          data: results,
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "get menu error",
         },
       };
     }

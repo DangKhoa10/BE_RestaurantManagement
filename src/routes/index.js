@@ -16,6 +16,7 @@ router.use("/api/employee", require("./employee"));
 router.use("/api/typeOfRoom", require("./typeOfRoom"));
 router.use("/api/typeOfMenu", require("./typeOfMenu"));
 router.use("/api/image", require("./image"));
+router.use("/api/post", require("./post"));
 
 
 

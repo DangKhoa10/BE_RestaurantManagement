@@ -15,6 +15,7 @@ class OrderService {
     SoLuongBanOrPhong,
     ThoiGianBatDau,
     MaKhachHang,
+    MaNhanVien,
     ListThucDon,
     ListPhong,
     ListBan,
@@ -43,6 +44,7 @@ class OrderService {
         SoLuongBanOrPhong,
         ThoiGianBatDau,
         MaKhachHang: MaKH,
+        MaNhanVien: MaNhanVien,
         HoTen,
         Email,
         SoDienThoai,
@@ -138,6 +140,12 @@ class OrderService {
             path: "MaKhachHang",
           },
         })
+        .populate({
+          path: "MaPhieuDat",
+          populate: {
+            path: "MaNhanVien",
+          },
+        })
         .populate("ListThucDon.MaThucDon")
         .populate({
           path: "ListPhong",
@@ -168,7 +176,7 @@ class OrderService {
 
   static getAllOrder = async () => {
     try {
-      const orders = await orderModel.find();
+      const orders = await orderModel.find().populate("MaKhachHang").populate("MaNhanVien");
       return {
         code: 200,
         metadata: {
@@ -408,7 +416,8 @@ class OrderService {
       if (MaKhachHang) {
         query.MaKhachHang = MaKhachHang;
       }
-      const orders = await orderModel.find(query).sort({ createdAt: -1 })
+      const orders = await orderModel.find(query)
+      .populate("MaKhachHang").populate("MaNhanVien").sort({ createdAt: -1 })
       return {
         code: 200,
         metadata: {

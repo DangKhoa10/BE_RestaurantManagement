@@ -105,6 +105,27 @@ class MenuService {
       };
     }
   };
+  static deleteMenu = async ({ id }) => {
+    try {
+      await menuModel.deleteOne({ _id: id });
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          message: "Xóa thành công",
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "delete menu error",
+        },
+      };
+    }
+  };
 
   static getAllMenu = async () => {
     try {

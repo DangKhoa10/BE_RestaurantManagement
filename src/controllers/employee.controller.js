@@ -48,6 +48,24 @@ class EmployeeController{
             next(err);
         }
     }
+    getAllEmployee = async (req, res, next) => {
+        try {
+            const result = await EmployeeService.getAllEmployee(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
+    getEmployeeById = async (req, res, next) => {
+        try {
+            const result = await EmployeeService.getEmployeeById(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
 
   
 }

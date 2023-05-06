@@ -28,10 +28,13 @@ const employeeSchema = new Schema({
         type: String ,
         required: true
     },
+    IsDelete:{
+        type: Boolean,
+        required: true
+    },
     MaTaiKhoan:{
         type: Schema.Types.ObjectId,
         ref:'TaiKhoan',
-
     }
 },{
     timestamps: true,

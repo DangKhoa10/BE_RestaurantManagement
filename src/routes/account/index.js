@@ -10,6 +10,8 @@ router.post(
 );
 router.post("/verifyOtp", accountController.verifyOtp);
 router.post("/sendOtp", accountController.sendOtp);
+router.post("/verifyForgetPassword", accountController.verifyForgetPassword);
+router.post("/changePassword", accountController.changePassword);
 router.get("/getAccountById/:userId", accountController.getAccountById);
 
 module.exports = router;

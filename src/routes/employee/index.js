@@ -7,5 +7,7 @@ router.post('/getEmployeeByPhone' , employeeController.getEmployeeByPhone)
 router.post('/updateEmployee' , employeeController.updateEmployee)
 router.post('/addEmployee' , employeeController.addEmployee)
 router.post('/deleteEmployee' , employeeController.deleteEmployee)
+router.post('/getAllEmployee' , employeeController.getAllEmployee)
+router.post('/getEmployeeById' , employeeController.getEmployeeById)
 
 module.exports = router

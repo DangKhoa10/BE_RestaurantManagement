@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const crypto = require("node:crypto");
 const KeyTokenService = require("./keyToken.service");
 const { createTokenPair, verifyToken } = require("../auth/authUtils");
-const { sendMail, templateMailSendOTP } = require("../utils");
+const { sendMail, templateMailSendOTP, generatePassword ,templateMailSendPassword} = require("../utils");
 
 class AccountService {
   static getAccountById = async (id) => {
@@ -368,6 +368,129 @@ class AccountService {
           success: false,
           message: err.message,
           status: "Send OTP failed",
+        },
+      };
+    }
+  };
+
+  static verifyForgetPassword = async ({ Email, OTP }) => {
+    try {
+      const getotp = await otpModel.find({ Email });
+      if (!getotp.length) {
+        return {
+          code: 404,
+          metadata: {
+            success: false,
+            message: "OTP hết hạn",
+          },
+        };
+      }
+      const otpLast = getotp[getotp.length - 1];
+      const otpValid = await bcrypt.compare(OTP, otpLast.OTP);
+
+      if (!otpValid)
+        return {
+          code: 400,
+          metadata: {
+            success: false,
+            message: "OTP không chính xác",
+          },
+        };
+
+      //update
+      const newPW = generatePassword(8);
+      let subject = "Mật khẩu mới";
+      let mail = Email;
+      let html = templateMailSendPassword(newPW);
+      let check = sendMail(mail, subject, html);
+
+      const passwordHash = await bcrypt.hash(newPW, 10);
+      const userUpdate = await accountModel.findOneAndUpdate(
+        { Email },
+        {
+          $set: { MatKhau: passwordHash },
+        },
+        { new: true }
+      );
+
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          message: "Kiểm tra mail để nhận mật khẩu mới",
+        },
+      };
+    } catch (error) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: error.message,
+          status: "failed",
+        },
+      };
+    }
+  };
+
+  static changePassword = async ({ Email, MatKhauCu , MatKhauMoi }) => {
+    try {
+      const account = await accountModel.findOne({ Email }).lean();
+      if (!account) {
+        return {
+          code: 404,
+          metadata: {
+            success: false,
+            message: "Không tìm thấy tài khoản",
+          },
+        };
+      }
+      const pwValid = await bcrypt.compare(MatKhauCu, account.MatKhau);
+
+      if (!pwValid)
+        return {
+          code: 400,
+          metadata: {
+            success: false,
+            message: "Mật khẩu cũ không chính xác",
+          },
+        };
+
+      //update
+      const passwordHash = await bcrypt.hash(MatKhauMoi, 10);
+      const userUpdate = await accountModel.findOneAndUpdate(
+        { Email },
+        {
+          $set: { MatKhau: passwordHash },
+        },
+        { new: true }
+      );
+
+      if(userUpdate){
+        return {
+          code: 200,
+          metadata: {
+            success: true,
+            message: "Đổi mật khẩu thành công",
+         
+          },
+        };
+      }
+      return {
+        code: 400,
+        metadata: {
+          success: false,
+          message: "Đổi mật khẩu thất bại",
+       
+        },
+      };
+      
+    } catch (error) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "Đổi mật khẩu thất bại",
         },
       };
     }

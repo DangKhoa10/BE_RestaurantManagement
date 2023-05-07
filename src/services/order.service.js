@@ -4,7 +4,9 @@ const customerModel = require("../models/customer.model");
 const {
   sendMail,
   templateMailSendOrder,
-  templateMailChangeStatus,
+  templateMailConfirmOrder,
+  templateMailConfirmDepositOrder,
+  templateMailCancelOrder
 } = require("../utils");
 
 class OrderService {
@@ -60,12 +62,12 @@ class OrderService {
 
         if (newOrderDetail) {
           let subject = `Yêu cầu đặt ${
-            LoaiPhieuDat === 0 ? "bàn" : "phòng"
+            LoaiPhieuDat === 0 ? "bàn" : LoaiPhieuDat ===  1 ? "phòng" : "phòng vip"
           } thành công`;
 
           let mail = Email;
 
-          let html = templateMailSendOrder(LoaiPhieuDat);
+          let html = templateMailSendOrder(LoaiPhieuDat , HoTen);
 
           let check = sendMail(mail, subject, html);
 
@@ -273,6 +275,31 @@ class OrderService {
         );
 
         if (updateOrderDetail) {
+
+
+          if(TrangThai === 1){
+            const orderDetail = await orderDetailModel
+            .find({ MaPhieuDat:  updateOrder._id})
+            .populate("ListThucDon.MaThucDon")
+            .lean();
+            let total = orderDetail[0].ListThucDon.reduce((total, menu) => total + menu?.MaThucDon?.GiaMon * menu?.SoLuong, 0)*30/100
+            if(total === 0 && updateOrder.LoaiPhieuDat === 0){
+
+            }else{
+              let subject = `Đơn đặt đã được xác nhận`;
+              let mail = updateOrder.Email;
+              let html = templateMailConfirmOrder({
+                LoaiPhieuDat : updateOrder.LoaiPhieuDat ,
+                HoTen: updateOrder.HoTen,
+                TienMonAn: total,
+                SoPhong: updateOrder.LoaiPhieuDat === 0 ? 0 : updateOrder.SoLuongBanOrPhong ,
+                TienDatPhong: updateOrder.LoaiPhieuDat === 0 ? 0 : updateOrder.LoaiPhieuDat === 1 ? 50000*updateOrder.SoLuongBanOrPhong : 100000*updateOrder.SoLuongBanOrPhong 
+              });
+              let check = sendMail(mail, subject, html);
+            }
+            
+          }
+
           return {
             code: 200,
             metadata: {
@@ -322,18 +349,24 @@ class OrderService {
         new: true
     })
       
-      if(TrangThai==1){
-          // let subject = `Đơn đặt ${updateOrder.LoaiPhieuDat == 0? "bàn" :"phòng"} thành công`;
-          
-          // let mail = updateOrder.Email
-           
-          // let html = templateMailSendOrder(LoaiPhieuDat)
-
-          // let check = sendMail(mail,subject,html)
-      }
       if (TrangThai == 2) {
+          let subject = `Đặt ${updateOrder.LoaiPhieuDat === 0 ? "bàn" : "phòng" } thành công`;
+          let mail = updateOrder.Email;
+          let html = templateMailConfirmDepositOrder({
+            LoaiPhieuDat: updateOrder.LoaiPhieuDat ,
+             HoTen: updateOrder.HoTen , ThoiGianBatDau: updateOrder.ThoiGianBatDau , MaDonDat: id
+          });
+          let check = sendMail(mail, subject, html);
       }
-      if (TrangThai == 3) {
+      if (TrangThai == 4) {
+          let subject = `Đơn đặt ${updateOrder.LoaiPhieuDat === 0 ? "bàn" : "phòng" } bị hủy`;
+          let mail = updateOrder.Email;
+          let html = templateMailCancelOrder({
+            LoaiPhieuDat: updateOrder.LoaiPhieuDat ,
+             HoTen: updateOrder.HoTen
+          });
+          let check = sendMail(mail, subject, html);
+        
       }
 
       return {

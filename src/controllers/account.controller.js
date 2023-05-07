@@ -54,6 +54,22 @@ class AccountController {
       next(err);
     }
   };
+  verifyForgetPassword = async (req, res, next) => {
+    try {
+      const result = await AccountService.verifyForgetPassword(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  changePassword = async (req, res, next) => {
+    try {
+      const result = await AccountService.changePassword(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
 
   getAccountById = async (req, res, next) => {
     try {

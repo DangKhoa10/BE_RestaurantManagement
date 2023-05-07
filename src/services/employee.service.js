@@ -1,6 +1,7 @@
 const employeeModel = require("../models/employee.model")
 const accountModel = require("../models/account.model");
 const customerModel = require("../models/customer.model");
+const bcrypt = require("bcrypt");
 
 class EmployeeService {
 
@@ -77,7 +78,7 @@ class EmployeeService {
                 const userUpdate = await accountModel.findOneAndUpdate(
                     { Email },
                     {
-                      $set: { XacThuc: true, LoaiTaiKhoan: 1 },
+                      $set: { LoaiTaiKhoan: 1 },
                     },
                 );
                 MaTaiKhoan = account._id
@@ -88,7 +89,6 @@ class EmployeeService {
                     MatKhau: passwordHash,
                     LoaiTaiKhoan: 1,
                     TrangThai: 0,
-                    XacThuc: true
                 });
 
                 MaTaiKhoan = newAccount._id

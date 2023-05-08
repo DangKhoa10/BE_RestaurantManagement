@@ -1,5 +1,6 @@
 const invoiceModel = require("../models/invoice.model")
 const menuModel = require("../models/menu.model")
+const customerModel = require("../models/customer.model")
 
 
 class InvoiceService {
@@ -18,10 +19,20 @@ class InvoiceService {
     ListBan
   }) => {
     try {
+      let MaKH;
+      if (MaKhachHang) {
+        MaKH = MaKhachHang;
+      } else {
+        const newCustomer = await customerModel.create({
+          TenKhachHang: HoTen,
+          SoDienThoai,
+        });
+        MaKH = newCustomer._id;
+      }
       const invoiceNew = await invoiceModel.create({
         MaPhieuDat,
         MaNhanVien,
-        MaKhachHang,
+        MaKhachHang: MaKH,
         HoTen,
         SoDienThoai,
         LoaiHoaDon,

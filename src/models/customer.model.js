@@ -26,7 +26,6 @@ const customerSchema = new Schema(
     },
     Email: {
       type: String,
-      required: true,
     },
     MaTaiKhoan: {
       type: Schema.Types.ObjectId,

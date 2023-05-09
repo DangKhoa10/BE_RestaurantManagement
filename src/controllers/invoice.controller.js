@@ -1,7 +1,7 @@
 const InvoiceService = require("../services/invoice.service");
 
 class InvoiceController {
-    addInvoice = async (req, res, next) => {
+  addInvoice = async (req, res, next) => {
     try {
       const result = await InvoiceService.addInvoice(req.body);
       return res.status(result.code).json(result.metadata);
@@ -25,7 +25,7 @@ class InvoiceController {
       next(err);
     }
   };
-  
+
   getInvoiceFromDateToDate = async (req, res, next) => {
     try {
       const result = await InvoiceService.getInvoiceFromDateToDate(req.body);
@@ -36,7 +36,9 @@ class InvoiceController {
   };
   getQuantityMenuFromDateToDate = async (req, res, next) => {
     try {
-      const result = await InvoiceService.getQuantityMenuFromDateToDate(req.body);
+      const result = await InvoiceService.getQuantityMenuFromDateToDate(
+        req.body
+      );
       return res.status(result.code).json(result.metadata);
     } catch (err) {
       next(err);
@@ -50,7 +52,6 @@ class InvoiceController {
       next(err);
     }
   };
-  
 }
 
 module.exports = new InvoiceController();

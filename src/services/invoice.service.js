@@ -23,11 +23,17 @@ class InvoiceService {
       if (MaKhachHang) {
         MaKH = MaKhachHang;
       } else {
-        const newCustomer = await customerModel.create({
-          TenKhachHang: HoTen,
-          SoDienThoai,
-        });
-        MaKH = newCustomer._id;
+        if(HoTen && SoDienThoai){
+          const newCustomer = await customerModel.create({
+            TenKhachHang: HoTen,
+            SoDienThoai,
+          });
+          MaKH = newCustomer._id;
+        }
+        else{
+          MaKH = null;
+        }
+
       }
       const invoiceNew = await invoiceModel.create({
         MaPhieuDat,

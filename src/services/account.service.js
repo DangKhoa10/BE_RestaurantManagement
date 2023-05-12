@@ -4,7 +4,6 @@ const employeeModel = require("../models/employee.model");
 const otpModel = require("../models/otp.model");
 const JWT = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const crypto = require("node:crypto");
 const KeyTokenService = require("./keyToken.service");
 const { createTokenPair, verifyToken } = require("../auth/authUtils");
 const { sendMail, templateMailSendOTP, generatePassword ,templateMailSendPassword} = require("../utils");

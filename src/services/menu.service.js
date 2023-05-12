@@ -1,9 +1,9 @@
-const menuModel = require("../models/menu.model");
+import { create, findOneAndUpdate, deleteOne, find, findOne } from "../models/menu.model";
 
 class MenuService {
   static addMenu = async ({ TenMon, GiaMon, DonViTinh,MoTa, HinhAnh, MaLoai }) => {
     try {
-      const newMenu = await menuModel.create({
+      const newMenu = await create({
         TenMon,
         GiaMon,
         DonViTinh,
@@ -34,7 +34,7 @@ class MenuService {
 
   static updateMenu = async ({id,TenMon, GiaMon, DonViTinh,MoTa, HinhAnh, MaLoai})=>{
     try{
-        const updateMenu = await menuModel.findOneAndUpdate({
+        const updateMenu = await findOneAndUpdate({
             _id: id
         },{
           TenMon, GiaMon, DonViTinh,MoTa, HinhAnh, MaLoai
@@ -64,7 +64,7 @@ class MenuService {
   }
 static deleteMenu = async ({id})=>{
     try{
-        await menuModel.deleteOne({ _id: id })
+        await deleteOne({ _id: id })
         return {
             code: 200,
             metadata:{
@@ -89,7 +89,7 @@ static deleteMenu = async ({id})=>{
 
   static getAllMenu = async () => {
     try {
-      const menus = await menuModel.find().populate('MaLoai').exec();
+      const menus = await find().populate('MaLoai').exec();
 
       return {
         code: 200,
@@ -111,7 +111,7 @@ static deleteMenu = async ({id})=>{
   };
   static getOneMenu = async (id) => {
     try {
-      const menu = await menuModel.findOne({ _id: id });
+      const menu = await findOne({ _id: id });
       return {
         code: 200,
         metadata: {
@@ -151,7 +151,7 @@ static deleteMenu = async ({id})=>{
         if(MaLoai){
             query.MaLoai = MaLoai
         }
-        const menus = await menuModel.find(query)
+        const menus = await find(query)
             .populate('MaLoai')
         return {
             code: 200,
@@ -173,7 +173,7 @@ static deleteMenu = async ({id})=>{
 };
 static getMenuByTypeMenuId = async ({MaLoai}) => {
     try {
-      const menus = await menuModel.find({ MaLoai : MaLoai }).populate('MaLoai')
+      const menus = await find({ MaLoai : MaLoai }).populate('MaLoai')
       return {
         code: 200,
         metadata: {
@@ -194,4 +194,4 @@ static getMenuByTypeMenuId = async ({MaLoai}) => {
 };
 }
 
-module.exports = MenuService;
+export default MenuService;

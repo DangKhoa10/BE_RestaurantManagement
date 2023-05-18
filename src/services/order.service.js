@@ -61,16 +61,18 @@ class OrderService {
         });
 
         if (newOrderDetail) {
-          let subject = `Yêu cầu đặt ${
-            LoaiPhieuDat === 0 ? "bàn" : LoaiPhieuDat ===  1 ? "phòng" : "phòng vip"
-          } thành công`;
-
-          let mail = Email;
-
-          let html = templateMailSendOrder(LoaiPhieuDat , HoTen);
-
-          let check = sendMail(mail, subject, html);
-
+          if(Email){
+            let subject = `Yêu cầu đặt ${
+              LoaiPhieuDat === 0 ? "bàn" : LoaiPhieuDat ===  1 ? "phòng" : "phòng vip"
+            } thành công`;
+  
+            let mail = Email;
+  
+            let html = templateMailSendOrder(LoaiPhieuDat , HoTen);
+  
+            let check = sendMail(mail, subject, html);
+          }
+          
           return {
             code: 201,
             metadata: {
@@ -154,8 +156,23 @@ class OrderService {
           populate: {
             path: "MaLoai",
           },
+          populate:{
+            path: "MaKhuVuc",
+            select: 'TenKhuVuc',
+          }
         })
-        .populate("ListBan")
+        .populate({
+          path: "ListBan",
+          populate: {
+            path: "MaPhong",
+            select: 'TenPhong',
+            populate:{
+              path: "MaKhuVuc",
+              select: 'TenKhuVuc',
+            }
+          },
+        }
+        )
         .exec();
       return {
         code: 200,
@@ -278,6 +295,7 @@ class OrderService {
 
 
           if(TrangThai === 1){
+
             const orderDetail = await orderDetailModel
             .find({ MaPhieuDat:  updateOrder._id})
             .populate("ListThucDon.MaThucDon")
@@ -286,16 +304,19 @@ class OrderService {
             if(total === 0 && updateOrder.LoaiPhieuDat === 0){
 
             }else{
-              let subject = `Đơn đặt đã được xác nhận`;
-              let mail = updateOrder.Email;
-              let html = templateMailConfirmOrder({
-                LoaiPhieuDat : updateOrder.LoaiPhieuDat ,
-                HoTen: updateOrder.HoTen,
-                TienMonAn: total,
-                SoPhong: updateOrder.LoaiPhieuDat === 0 ? 0 : updateOrder.SoLuongBanOrPhong ,
-                TienDatPhong: updateOrder.LoaiPhieuDat === 0 ? 0 : updateOrder.LoaiPhieuDat === 1 ? 50000*updateOrder.SoLuongBanOrPhong : 100000*updateOrder.SoLuongBanOrPhong 
-              });
-              let check = sendMail(mail, subject, html);
+              if(updateOrder.Email){
+                let subject = `Đơn đặt đã được xác nhận`;
+                let mail = updateOrder.Email;
+                let html = templateMailConfirmOrder({
+                  LoaiPhieuDat : updateOrder.LoaiPhieuDat ,
+                  HoTen: updateOrder.HoTen,
+                  TienMonAn: total,
+                  SoPhong: updateOrder.LoaiPhieuDat === 0 ? 0 : updateOrder.SoLuongBanOrPhong ,
+                  TienDatPhong: updateOrder.LoaiPhieuDat === 0 ? 0 : updateOrder.LoaiPhieuDat === 1 ? 50000*updateOrder.SoLuongBanOrPhong : 100000*updateOrder.SoLuongBanOrPhong 
+                });
+                let check = sendMail(mail, subject, html);
+              }
+              
             }
             
           }
@@ -349,6 +370,7 @@ class OrderService {
         new: true
     })
       
+    if(updateOrder.Email){
       if (TrangThai == 2) {
           let subject = `Đặt ${updateOrder.LoaiPhieuDat === 0 ? "bàn" : "phòng" } thành công`;
           let mail = updateOrder.Email;
@@ -368,6 +390,7 @@ class OrderService {
           let check = sendMail(mail, subject, html);
         
       }
+    }
 
       return {
         code: 200,

@@ -134,8 +134,22 @@ class InvoiceService {
           populate: {
             path: "MaLoai",
           },
+          populate:{
+            path: "MaKhuVuc",
+            select: 'TenKhuVuc',
+          }
         })
-        .populate("ListBan")
+        .populate({
+          path: "ListBan",
+          populate: {
+            path: "MaPhong",
+            select: 'TenPhong',
+            populate:{
+              path: "MaKhuVuc",
+              select: 'TenKhuVuc',
+            }
+          },
+        })
       return {
         code: 200,
         metadata: {

@@ -216,18 +216,18 @@ class AccountService {
       const decode = await JWT.verify(AccessToken.toString(), publicKey);
       if (decode) {
         const account = await accountModel
-          .find({ _id: decode.userId })
+          .findOne({ _id: decode.userId })
           .select("-MatKhau")
-          .lean();
+          .lean().exec()
 
         let customer
-        if(account.LoaiTaiKhoan===0) {
+        if(account.LoaiTaiKhoan === 0) {
           customer = await customerModel
-          .find({ MaTaiKhoan: decode.userId })
+          .findOne({ MaTaiKhoan: decode.userId })
           .lean();
         }else{
           customer = await employeeModel
-          .find({ MaTaiKhoan: decode.userId })
+          .findOne({ MaTaiKhoan: decode.userId })
           .lean();
         }
         

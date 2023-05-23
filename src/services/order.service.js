@@ -372,11 +372,32 @@ class OrderService {
       
     if(updateOrder.Email){
       if (TrangThai == 2) {
+        const orderDetail = await orderDetailModel.findOne({ MaPhieuDat: id })
+        .populate({
+          path: "ListPhong",
+          populate:{
+            path: "MaKhuVuc",
+            select: 'TenKhuVuc',
+          }
+        })
+        .populate({
+          path: "ListBan",
+          populate: {
+            path: "MaPhong",
+            select: 'TenPhong',
+            populate:{
+              path: "MaKhuVuc",
+              select: 'TenKhuVuc',
+            }
+          },
+        })
+        .exec()
+          let vitri = updateOrder.LoaiPhieuDat === 0 ? orderDetail.ListBan : orderDetail.ListPhong
           let subject = `Đặt ${updateOrder.LoaiPhieuDat === 0 ? "bàn" : "phòng" } thành công`;
           let mail = updateOrder.Email;
           let html = templateMailConfirmDepositOrder({
             LoaiPhieuDat: updateOrder.LoaiPhieuDat ,
-             HoTen: updateOrder.HoTen , ThoiGianBatDau: updateOrder.ThoiGianBatDau , MaDonDat: id
+             HoTen: updateOrder.HoTen , ThoiGianBatDau: updateOrder.ThoiGianBatDau , MaDonDat: id ,ViTri : vitri
           });
           let check = sendMail(mail, subject, html);
       }

@@ -613,7 +613,7 @@ const templateMailConfirmOrder = ({LoaiPhieuDat , HoTen , TienMonAn, SoPhong ,Ti
                          
                          <div>
                             <span class="text">Tổng số tiền cần phải đặt cọc:</span>
-                            <span class="text active">${LoaiPhieuDat === 0 ? TienMonAn : convertToVND(TienMonAn + TienDatPhong)}</span>
+                            <span class="text active">${LoaiPhieuDat === 0 ? convertToVND(TienMonAn) : convertToVND(TienMonAn + TienDatPhong)}</span>
                          </div>
                         <div>
                             <span class="text">Thực hiện thanh toán cho chúng tôi dựa trên phương thức đã trao đổi thông qua cuộc gọi</span>
@@ -641,7 +641,7 @@ const templateMailConfirmOrder = ({LoaiPhieuDat , HoTen , TienMonAn, SoPhong ,Ti
 }
 
 
-const templateMailConfirmDepositOrder = ({LoaiPhieuDat , HoTen , ThoiGianBatDau , MaDonDat}) =>{
+const templateMailConfirmDepositOrder = ({LoaiPhieuDat , HoTen , ThoiGianBatDau , MaDonDat, ViTri}) =>{
     const html = `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -756,6 +756,28 @@ const templateMailConfirmDepositOrder = ({LoaiPhieuDat , HoTen , ThoiGianBatDau 
                        <div>
                             <span class="text">Mã đơn đặt của bạn là: ${MaDonDat}</span>
                         </div>
+                        <div>
+                            <span class="text">Vị trí ${LoaiPhieuDat === 0 ? "bàn" : LoaiPhieuDat === 1 ? "phòng" : "phòng vip"} của bạn là :</span>
+                        </div>
+                        ${LoaiPhieuDat === 0 ? ViTri.map((item , idx) =>{
+                            return `
+                            <div>
+                                <span class="text">
+                                ${`Mã bàn: ${item.MaBan} nằm ở ${item.MaPhong.MaKhuVuc.TenKhuVuc}, ${item.MaPhong.TenPhong}, bàn số ${item.SoThuTuBan}`}
+                                </span>
+                            </div>
+                            `
+                        
+                        }): ""}
+                        ${LoaiPhieuDat === 1 || LoaiPhieuDat === 2 ? ViTri.map((item , idx) =>{
+                            return `
+                                <div>
+                                    <span class="text">
+                                        ${`Mã phòng: ${item.MaPhong} nằm ở ${item.MaKhuVuc.TenKhuVuc}, ${item.TenPhong}`}
+                                    </span>
+                                </div>
+                            `
+                        }): ""}
                         <div>
                             <span class="text">
                                 Đến và cung cấp mã đơn đặt, email hoặc số điện thoại tại quầy lễ tân để tiến hành thủ tục nhận ${LoaiPhieuDat === 0 ? "bàn" : "phòng"}

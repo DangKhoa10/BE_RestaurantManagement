@@ -208,12 +208,19 @@ class RoomService {
                       { SoChoNgoiToiDa: { $gte: SoNguoi } },
                       { MaLoai: { $eq: MaLoaiPhong}}
                     ]
-                  }).populate("MaLoai").lean()
+                  }).populate("MaLoai")
+                  .populate({
+                    path: "MaKhuVuc",
+                    select: 'TenKhuVuc',
+                  }).lean()
             }else{
                 roomMatchs = await roomModel.find({
                     SoChoNgoiToiDa: { $gte: SoNguoi },
                     MaLoai: { $eq: MaLoaiPhong}
-                }).populate("MaLoai")
+                }).populate("MaLoai").populate({
+                  path: "MaKhuVuc",
+                  select: 'TenKhuVuc',
+                })
             }
 
              

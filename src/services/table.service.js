@@ -200,11 +200,25 @@ class TableService{
                       { _id: { $nin: tableIdNotMatch } },
                       { SoChoNgoi: { $gte: SoNguoi } },
                     ]
-                  }).lean()
+                  }).populate({
+                    path: "MaPhong",
+                    select: 'TenPhong',
+                    populate:{
+                      path: "MaKhuVuc",
+                      select: 'TenKhuVuc',
+                    }
+                  })
             }else{
                 tableMatchs = await modelTable.find({
                     SoChoNgoi: { $gte: SoNguoi },
-                })
+                }).populate({
+                    path: "MaPhong",
+                    select: 'TenPhong',
+                    populate:{
+                      path: "MaKhuVuc",
+                      select: 'TenKhuVuc',
+                    }
+                  })
             }
 
              

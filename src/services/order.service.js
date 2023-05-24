@@ -308,6 +308,7 @@ class OrderService {
                 let subject = `Đơn đặt đã được xác nhận`;
                 let mail = updateOrder.Email;
                 let html = templateMailConfirmOrder({
+                  MaPhieuDat: updateOrder._id,
                   LoaiPhieuDat : updateOrder.LoaiPhieuDat ,
                   HoTen: updateOrder.HoTen,
                   TienMonAn: total,
@@ -434,6 +435,7 @@ class OrderService {
     }
   };
   static getOrderByAll = async ({
+    MaPhieuDat,
     LoaiPhieuDat,
     TrangThai,
     SoLuongNguoiTrenBanOrPhong,
@@ -474,6 +476,9 @@ class OrderService {
         );
 
         query.ThoiGianBatDau = { $gte: start, $lt: end };
+      }
+      if (MaPhieuDat) {
+        query._id = MaPhieuDat
       }
       if (GhiChu) {
         query.GhiChu = { $regex: GhiChu, $options: "i" };

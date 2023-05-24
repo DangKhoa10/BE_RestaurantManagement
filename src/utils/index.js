@@ -477,7 +477,7 @@ const templateMailSendOrder = (LoaiPhieuDat , HoTen) =>{
     return html
 }
 
-const templateMailConfirmOrder = ({LoaiPhieuDat , HoTen , TienMonAn, SoPhong ,TienDatPhong}) =>{
+const templateMailConfirmOrder = ({MaPhieuDat, LoaiPhieuDat , HoTen , TienMonAn, SoPhong ,TienDatPhong}) =>{
     const html = `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -616,7 +616,7 @@ const templateMailConfirmOrder = ({LoaiPhieuDat , HoTen , TienMonAn, SoPhong ,Ti
                             <span class="text active">${LoaiPhieuDat === 0 ? convertToVND(TienMonAn) : convertToVND(TienMonAn + TienDatPhong)}</span>
                          </div>
                         <div>
-                            <span class="text">Thực hiện thanh toán cho chúng tôi dựa trên phương thức đã trao đổi thông qua cuộc gọi</span>
+                            <span class="text">Thực hiện thanh toán cho chúng tôi thông qua MOMO với số điện thoại 0948105460 với mô tả là mã đơn hàng: ${MaPhieuDat}</span>
                         </div>
                         <div>
                             <span class="text">Nếu chưa nhận được cuộc gọi từ chúng tôi, xin vui lòng liên hệ với số điện thoại: 0948105460 </span>

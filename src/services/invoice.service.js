@@ -170,6 +170,7 @@ class InvoiceService {
   };
   static getInvoiceByAll = async ({
     MaPhieuDat,
+    MaHoaDon,
     MaNhanVien,
     MaKhachHang,
     HoTen,
@@ -182,6 +183,9 @@ class InvoiceService {
       let query = {}
       if (MaPhieuDat) {
         query.MaPhieuDat = MaPhieuDat
+      }
+      if (MaHoaDon) {
+        query._id = MaHoaDon
       }
       if (ThoiGianBatDau) {
         const date = new Date(ThoiGianBatDau);

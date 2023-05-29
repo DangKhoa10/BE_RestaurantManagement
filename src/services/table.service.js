@@ -173,6 +173,9 @@ class TableService{
                     {
                         LoaiPhieuDat: { $eq: LoaiPhieuDat}
                     }
+                    ,{
+                        TrangThai: { $in: [0, 1, 2] }
+                    }
                   ]
                 
                     
@@ -192,15 +195,7 @@ class TableService{
             });
 
             //lấy danh sách các phòng phù hợp
-            let tableMatchs  = null;
-            if(tableIdNotMatch.length>0){
-
-                tableMatchs = await modelTable.find({
-                    $and: [
-                      { _id: { $nin: tableIdNotMatch } },
-                      { SoChoNgoi: { $gte: SoNguoi } },
-                    ]
-                  }).populate({
+            let tableMatchs  = await modelTable.find().populate({
                     path: "MaPhong",
                     select: 'TenPhong',
                     populate:{
@@ -208,26 +203,29 @@ class TableService{
                       select: 'TenKhuVuc',
                     }
                   })
-            }else{
-                tableMatchs = await modelTable.find({
-                    SoChoNgoi: { $gte: SoNguoi },
-                }).populate({
-                    path: "MaPhong",
-                    select: 'TenPhong',
-                    populate:{
-                      path: "MaKhuVuc",
-                      select: 'TenKhuVuc',
-                    }
-                  })
-            }
+           
 
-             
+            let tableOK = await tableMatchs.map(table => {
+                const { _id, MaBan, SoThuTuBan, TrangThai, SoChoNgoi, MaPhong, createdAt, updatedAt} = table;
+  
+                return {
+                  _id,
+                  MaBan,
+                  SoThuTuBan,
+                  TrangThai,
+                  SoChoNgoi,
+                  MaPhong,
+                  createdAt,
+                  updatedAt,
+                  TrangThaiDat: tableIdNotMatch.some(item => item.equals(_id))
+                };
+              })
 
             return {
                 code: 200,
                 metadata: {
                     success: true,
-                    data: tableMatchs
+                    data: tableOK
                 }
             }
         }

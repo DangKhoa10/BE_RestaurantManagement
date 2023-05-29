@@ -179,10 +179,10 @@ class RoomService {
                     },
                     {
                         LoaiPhieuDat: { $eq: LoaiPhieuDat}
+                    },{
+                      TrangThai: { $in: [0, 1, 2] }
                     }
-                  ]
-                
-                    
+                  ]    
             },{_id: 1})
 
             //chỉ lấy mã
@@ -202,20 +202,19 @@ class RoomService {
             let roomMatchs  = null;
             if(roomIdNotMatch.length>0){
 
-                 roomMatchs = await roomModel.find({
-                    $and: [
-                      { _id: { $nin: roomIdNotMatch } },
-                      { SoChoNgoiToiDa: { $gte: SoNguoi } },
+                 roomMatchs = await roomModel.find(
                       { MaLoai: { $eq: MaLoaiPhong}}
-                    ]
-                  }).populate("MaLoai")
+                  ).populate("MaLoai")
                   .populate({
                     path: "MaKhuVuc",
                     select: 'TenKhuVuc',
                   }).lean()
+
+
+                 
+
             }else{
                 roomMatchs = await roomModel.find({
-                    SoChoNgoiToiDa: { $gte: SoNguoi },
                     MaLoai: { $eq: MaLoaiPhong}
                 }).populate("MaLoai").populate({
                   path: "MaKhuVuc",
@@ -223,13 +222,30 @@ class RoomService {
                 })
             }
 
+            let roomOK = await roomMatchs.map(room => {
+              const { _id, MaPhong, TenPhong, TrangThai, SoChoNgoiToiDa, HinhAnh, MaLoai, MaKhuVuc, createdAt, updatedAt} = room;
+
+              return {
+                _id,
+                MaPhong,
+                TenPhong,
+                TrangThai,
+                SoChoNgoiToiDa,
+                HinhAnh,
+                MaLoai,
+                MaKhuVuc,
+                createdAt,
+                updatedAt,
+                TrangThaiDat: roomIdNotMatch.some(item => item.equals(_id))
+              };
+            })
              
 
             return {
                 code: 200,
                 metadata: {
                     success: true,
-                    data: roomMatchs
+                    data: roomOK,
                 }
             }
         }
